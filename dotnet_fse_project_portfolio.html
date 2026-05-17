@@ -1,0 +1,344 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1.5rem 0 1rem}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.tab{padding:6px 14px;border:0.5px solid var(--color-border-secondary);border-radius:20px;font-size:13px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s}
+.tab.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.panel{display:none}.panel.active{display:block}
+.proj{border:0.5px solid var(--color-border-tertiary);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.proj-head{padding:14px 16px;background:var(--color-background-secondary);cursor:pointer;display:flex;align-items:flex-start;gap:12px}
+.proj-num{min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+.n1{background:#EEEDFE;color:#3C3489}.n2{background:#E1F5EE;color:#085041}.n3{background:#FAEEDA;color:#633806}.n4{background:#FAECE7;color:#4A1B0C}.n5{background:#E6F1FB;color:#0C447C}
+@media(prefers-color-scheme:dark){
+  .n1{background:#26215C;color:#CECBF6}.n2{background:#04342C;color:#9FE1CB}.n3{background:#412402;color:#FAC775}.n4{background:#4A1B0C;color:#F5C4B3}.n5{background:#042C53;color:#B5D4F4}
+}
+.proj-meta{flex:1}
+.proj-title{font-size:14px;font-weight:500;margin-bottom:3px}
+.proj-tagline{font-size:12px;color:var(--color-text-secondary)}
+.impact-row{display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px}
+.b-purple{background:#EEEDFE;color:#3C3489}.b-teal{background:#E1F5EE;color:#085041}.b-amber{background:#FAEEDA;color:#633806}.b-coral{background:#FAECE7;color:#4A1B0C}.b-blue{background:#E6F1FB;color:#0C447C}.b-green{background:#EAF3DE;color:#27500A}
+@media(prefers-color-scheme:dark){
+  .b-purple{background:#26215C;color:#CECBF6}.b-teal{background:#04342C;color:#9FE1CB}.b-amber{background:#412402;color:#FAC775}.b-coral{background:#4A1B0C;color:#F5C4B3}.b-blue{background:#042C53;color:#B5D4F4}.b-green{background:#173404;color:#C0DD97}
+}
+.chevron{color:var(--color-text-secondary);font-size:16px;margin-top:2px;transition:transform .2s}
+.proj-body{padding:16px;display:none;border-top:0.5px solid var(--color-border-tertiary)}
+.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-secondary);margin-bottom:8px;margin-top:14px}
+.section-label:first-child{margin-top:0}
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:4px}
+.tech-item{background:var(--color-background-secondary);border-radius:8px;padding:9px 11px;border:0.5px solid var(--color-border-tertiary)}
+.tech-name{font-size:12px;font-weight:500;margin-bottom:2px}
+.tech-why{font-size:11px;color:var(--color-text-secondary);line-height:1.4}
+.feature-list{list-style:none}
+.feature-list li{font-size:13px;line-height:1.6;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;gap:8px;align-items:flex-start}
+.feature-list li:last-child{border-bottom:none}
+.fi{color:#1D9E75;font-size:14px;margin-top:2px}
+.ai-box{background:#EEEDFE;border-radius:8px;padding:11px 13px;font-size:13px;line-height:1.6;color:#26215C;margin-top:4px}
+@media(prefers-color-scheme:dark){.ai-box{background:#26215C;color:#CECBF6}}
+.wow-box{background:#E1F5EE;border-radius:8px;padding:11px 13px;font-size:13px;line-height:1.6;color:#04342C;margin-top:4px}
+@media(prefers-color-scheme:dark){.wow-box{background:#04342C;color:#9FE1CB}}
+.timeline{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.tl-item{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:7px 11px;font-size:12px;text-align:center;flex:1;min-width:80px}
+.tl-week{font-weight:500;font-size:13px}
+.tl-desc{color:var(--color-text-secondary);font-size:11px;margin-top:2px}
+.ats-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.ats-pill{font-size:12px;padding:3px 10px;border-radius:12px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.star-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.star-label{font-size:13px;flex:1}
+.stars{display:flex;gap:2px}
+.star{width:12px;height:12px;border-radius:2px}
+.s-fill{background:#1D9E75}.s-empty{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary)}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <div class="tab active" onclick="showTab('projects')">All 5 projects</div>
+  <div class="tab" onclick="showTab('ats')">ATS keywords</div>
+  <div class="tab" onclick="showTab('compare')">Which to pick first</div>
+</div>
+
+<div id="projects" class="panel active" id="proj-panel">
+
+<div class="proj" id="p1">
+  <div class="proj-head" onclick="toggle('p1')">
+    <div class="proj-num n1">1</div>
+    <div class="proj-meta">
+      <div class="proj-title">MediTrack — Hospital appointment & patient record system</div>
+      <div class="proj-tagline">Full .NET stack CRUD app solving a real Indian healthcare problem</div>
+      <div class="impact-row">
+        <span class="badge b-purple">Highest impact</span>
+        <span class="badge b-teal">JD match: 95%</span>
+        <span class="badge b-amber">4–5 weeks</span>
+      </div>
+    </div>
+    <i class="ti ti-chevron-down chevron" id="c-p1" aria-hidden="true"></i>
+  </div>
+  <div class="proj-body" id="b-p1">
+    <div class="section-label">What it does</div>
+    <ul class="feature-list">
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Patients book appointments online, doctors manage schedules, admin manages hospital records</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Role-based login (Patient / Doctor / Admin) with session management</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Prescription generation, medical history tracking, SQL-based record storage</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>REST Web API backend consumed by a clean HTML/CSS/JS frontend</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>ADO.NET for all database operations — no ORM, showing raw SQL skill</li>
+    </ul>
+    <div class="section-label">Tech stack — every item maps to JD</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-name">ASP.NET Core MVC</div><div class="tech-why">JD says "use ASP.NET MVC framework"</div></div>
+      <div class="tech-item"><div class="tech-name">C# Web API</div><div class="tech-why">JD says "REST web services using Web API"</div></div>
+      <div class="tech-item"><div class="tech-name">MS SQL + ADO.NET</div><div class="tech-why">JD says "CRUD in MS SQL" + "ADO.NET"</div></div>
+      <div class="tech-item"><div class="tech-name">HTML5 + CSS3 + JS</div><div class="tech-why">JD says "develop user interfaces"</div></div>
+      <div class="tech-item"><div class="tech-name">.NET Core</div><div class="tech-why">JD says "create application using .NET core"</div></div>
+      <div class="tech-item"><div class="tech-name">Microservices (light)</div><div class="tech-why">Separate Auth API + Records API = microservice pattern</div></div>
+    </div>
+    <div class="section-label">Your AI/ML angle — what makes it innovative</div>
+    <div class="ai-box">Add one smart module: symptom-based appointment routing. Patient types symptoms → a simple keyword-matching or rule-based engine routes them to the right department (not ML, just smart if/else logic in C#). This sounds impressive, is simple to build, and shows problem-solving beyond basic CRUD. No actual ML needed — just thoughtful design.</div>
+    <div class="section-label">What will impress the interviewer</div>
+    <div class="wow-box">You can walk through the entire stack: "I designed the SQL schema with 5 tables, wrote stored procedures for appointment booking, built the C# Web API controller, and consumed it from a Razor view." That end-to-end story is exactly what a Programmer Analyst is expected to do.</div>
+    <div class="section-label">Build timeline</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-week">Week 3</div><div class="tl-desc">SQL schema + ADO.NET</div></div>
+      <div class="tl-item"><div class="tl-week">Week 4</div><div class="tl-desc">C# Web API + MVC</div></div>
+      <div class="tl-item"><div class="tl-week">Week 5</div><div class="tl-desc">HTML/CSS/JS frontend</div></div>
+      <div class="tl-item"><div class="tl-week">Week 6</div><div class="tl-desc">Polish + GitHub README</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="proj" id="p2">
+  <div class="proj-head" onclick="toggle('p2')">
+    <div class="proj-num n2">2</div>
+    <div class="proj-meta">
+      <div class="proj-title">SmartExpense — Corporate expense tracker with approval workflow</div>
+      <div class="proj-tagline">Real enterprise workflow, REST API, multi-role system</div>
+      <div class="impact-row">
+        <span class="badge b-teal">Enterprise feel</span>
+        <span class="badge b-teal">JD match: 90%</span>
+        <span class="badge b-amber">3–4 weeks</span>
+      </div>
+    </div>
+    <i class="ti ti-chevron-down chevron" id="c-p2" aria-hidden="true"></i>
+  </div>
+  <div class="proj-body" id="b-p2">
+    <div class="section-label">What it does</div>
+    <ul class="feature-list">
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Employees submit expense claims with category, amount, receipts (file upload)</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Managers approve/reject with comments — full approval workflow in SQL</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Admin dashboard with monthly spend analytics per department</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>REST API with proper HTTP verbs — GET/POST/PUT/DELETE for all operations</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Status tracking: Pending → Approved → Paid (state machine in C#)</li>
+    </ul>
+    <div class="section-label">Tech stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-name">.NET Core Web API</div><div class="tech-why">REST endpoints for all expense operations</div></div>
+      <div class="tech-item"><div class="tech-name">MS SQL + ADO.NET</div><div class="tech-why">Relational schema with FK constraints</div></div>
+      <div class="tech-item"><div class="tech-name">ASP.NET MVC</div><div class="tech-why">Employee + Manager views</div></div>
+      <div class="tech-item"><div class="tech-name">JavaScript + CSS3</div><div class="tech-why">Dynamic form validation, status updates</div></div>
+    </div>
+    <div class="section-label">Your AI/ML angle</div>
+    <div class="ai-box">Add anomaly flagging: if an expense is 3x the employee's monthly average, flag it for extra review. Simple SQL aggregate comparison — no ML needed, but it sounds data-intelligent and shows you think beyond basic features.</div>
+    <div class="section-label">Interview talking point</div>
+    <div class="wow-box">This mimics what Cognizant actually builds for enterprise clients. You can say: "I modelled the approval workflow as a state machine, wrote stored procedures for the audit trail, and built REST endpoints that a React frontend could consume." Interviewers recognise real enterprise patterns.</div>
+  </div>
+</div>
+
+<div class="proj" id="p3">
+  <div class="proj-head" onclick="toggle('p3')">
+    <div class="proj-num n3">3</div>
+    <div class="proj-meta">
+      <div class="proj-title">EduPortal — Student learning management system</div>
+      <div class="proj-tagline">Familiar domain, complex enough to show depth, clean to explain</div>
+      <div class="impact-row">
+        <span class="badge b-amber">Easiest to build</span>
+        <span class="badge b-teal">JD match: 88%</span>
+        <span class="badge b-green">2–3 weeks</span>
+      </div>
+    </div>
+    <i class="ti ti-chevron-down chevron" id="c-p3" aria-hidden="true"></i>
+  </div>
+  <div class="proj-body" id="b-p3">
+    <div class="section-label">What it does</div>
+    <ul class="feature-list">
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Students enrol in courses, submit assignments, track grades</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Instructors create courses, grade submissions, post announcements</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>SQL schema: Students, Courses, Enrolments, Assignments, Grades tables</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Full REST API — clean separation of frontend and backend</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Responsive HTML/CSS frontend with JS form validation</li>
+    </ul>
+    <div class="section-label">Tech stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-name">C# .NET Core</div><div class="tech-why">Backend logic + API layer</div></div>
+      <div class="tech-item"><div class="tech-name">MS SQL + joins</div><div class="tech-why">Complex multi-table queries with aggregation</div></div>
+      <div class="tech-item"><div class="tech-name">ASP.NET MVC</div><div class="tech-why">Razor views for student/instructor portals</div></div>
+      <div class="tech-item"><div class="tech-name">HTML5 + CSS3 + JS</div><div class="tech-why">Responsive UI with dynamic elements</div></div>
+    </div>
+    <div class="section-label">Your AI/ML angle</div>
+    <div class="ai-box">Add a performance insight module: SQL queries that flag students at risk (e.g. grade below 50% in 2+ assignments) and surface them in the instructor dashboard. Pure SQL aggregation — no ML — but it demonstrates data-driven thinking that sets you apart.</div>
+  </div>
+</div>
+
+<div class="proj" id="p4">
+  <div class="proj-head" onclick="toggle('p4')">
+    <div class="proj-num n4">4</div>
+    <div class="proj-meta">
+      <div class="proj-title">InventoryIQ — Smart inventory & order management system</div>
+      <div class="proj-tagline">E-commerce backend — shows microservices thinking</div>
+      <div class="impact-row">
+        <span class="badge b-coral">Microservices angle</span>
+        <span class="badge b-teal">JD match: 92%</span>
+        <span class="badge b-amber">4–5 weeks</span>
+      </div>
+    </div>
+    <i class="ti ti-chevron-down chevron" id="c-p4" aria-hidden="true"></i>
+  </div>
+  <div class="proj-body" id="b-p4">
+    <div class="section-label">What it does</div>
+    <ul class="feature-list">
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Product catalogue management — add, update, delete, search with filters</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Order processing — customer places order, stock decrements, order tracked</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Low-stock alert system — automated flag when quantity falls below threshold</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Split into two .NET APIs: Inventory Service + Order Service (microservice pattern)</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>SQL with transactions — order + inventory update in one atomic operation</li>
+    </ul>
+    <div class="section-label">Tech stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-name">2x .NET Core Web APIs</div><div class="tech-why">JD mentions "Microservices Design Principles"</div></div>
+      <div class="tech-item"><div class="tech-name">MS SQL transactions</div><div class="tech-why">ACID compliance — shows DB depth</div></div>
+      <div class="tech-item"><div class="tech-name">ADO.NET</div><div class="tech-why">Explicit in JD — raw DB access</div></div>
+      <div class="tech-item"><div class="tech-name">HTML/CSS/JS dashboard</div><div class="tech-why">Admin inventory UI with live stock display</div></div>
+    </div>
+    <div class="section-label">Why this stands out</div>
+    <div class="wow-box">The microservices split (even two simple APIs talking to each other) directly addresses the JD line "Interpret Microservices Design Principles." Almost no fresher builds this. It shows architectural thinking, not just coding ability. Very easy to talk about in an interview.</div>
+    <div class="section-label">Your AI/ML angle</div>
+    <div class="ai-box">Add demand forecasting using simple moving average in C# — predict next month's stock need based on last 3 months of order data. Pure math, no ML library, but sounds intelligent and is a natural extension of your data background.</div>
+  </div>
+</div>
+
+<div class="proj" id="p5">
+  <div class="proj-head" onclick="toggle('p5')">
+    <div class="proj-num n5">5</div>
+    <div class="proj-meta">
+      <div class="proj-title">BugNest — Developer issue tracker with REST API</div>
+      <div class="proj-tagline">Meta project — a tool developers actually use, built with the skills being tested</div>
+      <div class="impact-row">
+        <span class="badge b-blue">Most ATS-friendly</span>
+        <span class="badge b-teal">JD match: 85%</span>
+        <span class="badge b-green">2–3 weeks</span>
+      </div>
+    </div>
+    <i class="ti ti-chevron-down chevron" id="c-p5" aria-hidden="true"></i>
+  </div>
+  <div class="proj-body" id="b-p5">
+    <div class="section-label">What it does</div>
+    <ul class="feature-list">
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Developers log bugs with severity, module, description, screenshots</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Assigned to team members, status tracked: Open → In Progress → Resolved → Closed</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Filter by severity, assignee, module — SQL WHERE + JOIN queries</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Dashboard showing bug count by module, average resolution time</li>
+      <li><i class="ti ti-check fi" aria-hidden="true"></i>Full CRUD REST API — each endpoint returns clean JSON</li>
+    </ul>
+    <div class="section-label">Tech stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-name">C# .NET Core Web API</div><div class="tech-why">Core REST API layer</div></div>
+      <div class="tech-item"><div class="tech-name">MS SQL</div><div class="tech-why">Bugs, Users, Projects, Comments tables</div></div>
+      <div class="tech-item"><div class="tech-name">ASP.NET MVC</div><div class="tech-why">Frontend views via Razor</div></div>
+      <div class="tech-item"><div class="tech-name">JavaScript + CSS3</div><div class="tech-why">Dynamic filters, status dropdowns</div></div>
+    </div>
+    <div class="section-label">Why interviewers love this</div>
+    <div class="wow-box">It's a tool that Cognizant's own QA and development teams use daily (they use Jira internally). Building a simpler version shows you understand their work environment. The JD line "Fix issues/defects in any part of an application" maps directly to this project's purpose.</div>
+  </div>
+</div>
+
+</div>
+
+<div id="ats" class="panel">
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px">These are the exact keywords Cognizant ATS and screeners look for in a Dot NET FSE resume. Every project above is designed to let you use most of these naturally.</div>
+
+  <div style="font-size:13px;font-weight:500;margin-bottom:8px">Must-have keywords (from JD directly)</div>
+  <div class="ats-row">
+    <span class="ats-pill">ASP.NET MVC</span><span class="ats-pill">C# .NET Core</span><span class="ats-pill">REST Web API</span><span class="ats-pill">ADO.NET</span><span class="ats-pill">MS SQL</span><span class="ats-pill">CRUD operations</span><span class="ats-pill">HTML5</span><span class="ats-pill">CSS3</span><span class="ats-pill">JavaScript</span><span class="ats-pill">.NET Core</span><span class="ats-pill">Microservices</span><span class="ats-pill">Azure</span>
+  </div>
+
+  <div style="font-size:13px;font-weight:500;margin:16px 0 8px">Strong supporting keywords</div>
+  <div class="ats-row">
+    <span class="ats-pill">Role-based authentication</span><span class="ats-pill">SQL joins</span><span class="ats-pill">Stored procedures</span><span class="ats-pill">OOP principles</span><span class="ats-pill">Exception handling</span><span class="ats-pill">HTTP verbs</span><span class="ats-pill">JSON API</span><span class="ats-pill">Full-stack</span><span class="ats-pill">Responsive UI</span><span class="ats-pill">Database design</span>
+  </div>
+
+  <div style="font-size:13px;font-weight:500;margin:16px 0 8px">Differentiator keywords (rare in fresher resumes)</div>
+  <div class="ats-row">
+    <span class="ats-pill">Microservices architecture</span><span class="ats-pill">SQL transactions</span><span class="ats-pill">State machine pattern</span><span class="ats-pill">Approval workflow</span><span class="ats-pill">Audit trail</span><span class="ats-pill">Moving average forecast</span><span class="ats-pill">Performance benchmarking</span>
+  </div>
+
+  <div style="font-size:13px;font-weight:500;margin:16px 0 8px">How to use these in your resume bullets</div>
+  <div style="background:var(--color-background-secondary);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.8;border:0.5px solid var(--color-border-tertiary)">
+    "Built a full-stack web application using <b>ASP.NET Core MVC</b> and <b>C# REST Web API</b>, implementing <b>CRUD operations</b> on <b>MS SQL</b> via <b>ADO.NET</b> with <b>role-based authentication</b> and a responsive <b>HTML5/CSS3/JavaScript</b> frontend."<br><br>That single sentence hits 8 ATS keywords. Write every project bullet this way.
+  </div>
+</div>
+
+<div id="compare" class="panel">
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px">Pick based on your timeline and what you want to demonstrate. Ideally, build Project 1 as your main portfolio piece, and one other as a supporting project.</div>
+
+  <div style="font-size:13px;font-weight:500;margin-bottom:10px">Impact scorecard</div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-secondary)">1 — MediTrack</div>
+    <div class="star-row"><span class="star-label">JD coverage</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div></div></div>
+    <div class="star-row"><span class="star-label">Interview impressiveness</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div></div></div>
+    <div class="star-row"><span class="star-label">Build difficulty</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+  </div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-secondary)">2 — SmartExpense</div>
+    <div class="star-row"><span class="star-label">JD coverage</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+    <div class="star-row"><span class="star-label">Interview impressiveness</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div></div></div>
+    <div class="star-row"><span class="star-label">Build difficulty</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div><div class="star s-empty"></div></div></div>
+  </div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-secondary)">3 — EduPortal</div>
+    <div class="star-row"><span class="star-label">JD coverage</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+    <div class="star-row"><span class="star-label">Interview impressiveness</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div><div class="star s-empty"></div></div></div>
+    <div class="star-row"><span class="star-label">Build difficulty</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div><div class="star s-empty"></div><div class="star s-empty"></div></div></div>
+  </div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-secondary)">4 — InventoryIQ</div>
+    <div class="star-row"><span class="star-label">JD coverage</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div></div></div>
+    <div class="star-row"><span class="star-label">Interview impressiveness</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+    <div class="star-row"><span class="star-label">Build difficulty</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-secondary)">5 — BugNest</div>
+    <div class="star-row"><span class="star-label">JD coverage</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+    <div class="star-row"><span class="star-label">Interview impressiveness</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div></div></div>
+    <div class="star-row"><span class="star-label">Build difficulty</span><div class="stars"><div class="star s-fill"></div><div class="star s-fill"></div><div class="star s-empty"></div><div class="star s-empty"></div><div class="star s-empty"></div></div></div>
+  </div>
+
+  <div style="background:#E1F5EE;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.6;color:#04342C">
+    <strong>Recommended combination:</strong> Build MediTrack as your primary project (starts Week 3, done by Week 6). Add BugNest or SmartExpense as a secondary — they're faster to build and give you two distinct domains to discuss. Never submit with just one project in your .NET portfolio.
+  </div>
+  <div style="background:#EEEDFE;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.6;color:#26215C;margin-top:10px">
+    <strong>Secret weapon:</strong> Your existing NeuroLocal and EY Hackathon projects already show FastAPI + React full-stack ability. The new .NET projects show you can adapt to any tech stack. Together, they tell a story of a versatile engineer — not just an AI specialist.
+  </div>
+</div>
+
+</div>
+
+<script>
+function toggle(id){
+  const b=document.getElementById('b-'+id);
+  const c=document.getElementById('c-'+id);
+  const open=b.style.display==='block';
+  b.style.display=open?'none':'block';
+  c.style.transform=open?'':'rotate(180deg)';
+}
+function showTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+toggle('p1');
+</script>

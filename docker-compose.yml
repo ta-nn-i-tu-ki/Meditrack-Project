@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: meditrack_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: MediTrackDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - meditrack_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: meditrack_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - meditrack_network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: meditrack_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - meditrack_network
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meditrack_api
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=MediTrackDb;Username=postgres;Password=mysecretpassword
+      - ConnectionStrings__Redis=redis:6379
+      - ConnectionStrings__RabbitMQ=rabbitmq
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - meditrack_network
+
+volumes:
+  pgdata:
+
+networks:
+  meditrack_network:
+    driver: bridge
