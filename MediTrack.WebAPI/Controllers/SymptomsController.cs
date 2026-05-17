@@ -1,4 +1,5 @@
 using MediatR;
+using MediTrack.Application.Symptoms.Commands;
 using MediTrack.Application.Symptoms.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,20 @@ public class SymptomsController : ControllerBase
         {
             var result = await _mediator.Send(query);
             return Ok(new { Analysis = result });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
+    }
+
+    [HttpPost("consult")]
+    public async Task<IActionResult> Consult([FromBody] ChatWithAiDoctorCommand command)
+    {
+        try
+        {
+            var result = await _mediator.Send(command);
+            return Ok(new { Response = result });
         }
         catch (Exception ex)
         {

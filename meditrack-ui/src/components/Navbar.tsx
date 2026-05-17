@@ -41,8 +41,9 @@ export default function Navbar() {
             
             <div className="hidden md:flex items-center space-x-8">
               <Link href="/" className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">Home</Link>
+              <Link href="/patient/dashboard" className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">Find a Doctor</Link>
               <Link href="/doctor" className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">Doctor Portal</Link>
-              <Link href="/admin" className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">Admin Dashboard</Link>
+              <Link href="/admin" className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">Disease Guide</Link>
             </div>
 
             <div className="flex items-center gap-4">

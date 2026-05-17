@@ -34,6 +34,7 @@ public static class DependencyInjection
 
         // Configure PDF Generation
         services.AddSingleton<IPdfService, Services.QuestPdfService>();
+        services.AddSingleton<IPdfGeneratorService, Services.PdfGeneratorService>();
 
         // Configure SignalR Service
         services.AddScoped<INotificationService, Services.SignalRNotificationService>();
